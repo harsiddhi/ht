@@ -1,0 +1,34 @@
+.s-icon{display:inline-block;background-image:url(../images/sprite.png)}
+.icon-android{background-position:0 -192px;width:100px;height:100px}
+.icon-angular{background-position:-441px 0;width:100px;height:100px}
+.icon-apt-footer{background-position:-541px -346px;width:27px;height:28px}
+.icon-apt-icon-blue{background-position:-585px -300px;width:35px;height:37px}
+.icon-apt-icon-white{background-position:-541px -300px;width:44px;height:46px}
+.icon-apt-logo-blue{background-position:0 0;width:241px;height:46px}
+.icon-apt-logo-white{background-position:0 -46px;width:241px;height:46px}
+.icon-aweber,.icon-codeignitor,.icon-drupal,.icon-ionic,.icon-ios,.icon-laravel,.icon-magento,.icon-mailchimp,.icon-mastercard,.icon-mysql,.icon-php,.icon-realex,.icon-shopify,.icon-skrill,.icon-swift,.icon-symfony,.icon-visa,.icon-woocommerce,.icon-wordpress,.icon-zend{width:100px;height:100px}
+.icon-aweber{background-position:-200px -192px}
+.icon-codeignitor{background-position:-341px 0}
+.icon-drupal{background-position:-341px -100px}
+.icon-ionic{background-position:0 -292px}
+.icon-ios{background-position:-100px -292px}
+.icon-laravel{background-position:-200px -292px}
+.icon-magento{background-position:-300px -292px}
+.icon-mailchimp{background-position:0 -92px}
+.icon-mastercard{background-position:-441px -100px}
+.icon-mysql{background-position:-441px -200px}
+.icon-paypal{background-position:0 -392px;width:100px;height:100px}
+.icon-php{background-position:-100px -392px}
+.icon-realex{background-position:-200px -392px}
+.icon-shopify{background-position:-300px -392px}
+.icon-skrill{background-position:-400px -392px}
+.icon-swift{background-position:-541px 0}
+.icon-symfony{background-position:-541px -100px}
+.icon-visa{background-position:-241px 0}
+.icon-woocommerce{background-position:-100px -92px}
+.icon-wordpress{background-position:-100px -192px}
+.icon-zend{background-position:-541px -200px}
+
+@media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){
+  .s-icon{background-image:url(../images/sprite@2x.png);background-size:641px 492px}
+}
