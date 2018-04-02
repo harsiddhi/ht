@@ -1,0 +1,81 @@
+function load_posts_by_ajax_callback() {
+    echo("<script>console.log('hhhhh');</script>");
+
+    check_ajax_referer('load_more_posts', 'security');
+    //print_r("ff");
+   // die();
+    $paged = $_POST['page'];
+    $query = new WP_Query( array
+        ( 'post_type' => 'easymediagallery',
+            'posts_per_page'=> '2',
+            'paged' => 1
+        )
+    );
+    $posts = $query->posts;?>
+
+
+<?php foreach($posts as $all_posts){
+
+    $meta = get_post_meta($all_posts->ID);
+    $per = get_the_permalink($all_posts->ID);
+
+    $category = get_the_terms($all_posts->ID,'emediagallery');
+    $title = $meta['easmedia_metabox_title'][0];
+    $term_post_id = get_the_terms($all_posts->ID,'emediagallery');
+    foreach($term_post_id as $term_id){
+        $temp_post_arr[] = $term_id->term_id;
+
+        //echo $term_id->term_id ; ?>
+<?php }
+$temp_post_ids = implode(' ',$temp_post_arr);
+//print_r($temp_post_ids);
+//die();
+?>
+
+<div class="col-sm-4 work-box <?php echo $temp_post_ids?>">
+
+            <a href="<?php echo $per ?>">
+                <!-- http://localhost/aptweb/easymedia/water-jug/ -->
+                <?php ?>
+              <img src="<?php echo $meta['easmedia_metabox_img'][0] ?>" alt="">
+              <span class="data-cont">
+                <span class="data-inner">
+                  <span class="data">
+                    <span class="title"><?php echo $all_posts->post_title ?></span>
+                    <hr>
+                    <span class="content">
+                      <?php //print_r(($category[0]->name));
+                     // die();
+                      $count = 0;
+                      $category_count = sizeof($category);
+                      ?>
+
+                        <?php foreach ($category as $cat){
+                            $count++;
+                        $category_name = strtoupper($cat->name);
+
+
+                              if($category_count == $count ){
+                                 echo $category_name ;
+                                }
+                                else
+                                {
+                                   echo $category_name . "  "."/ ";
+                                }
+
+
+
+                                } ?>
+
+                </span>
+                  </span>
+                </span>
+              </span>
+            </a>
+</div>
+<?php }
+
+    wp_die();
+}
+?>
+

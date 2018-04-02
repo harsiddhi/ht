@@ -565,6 +565,7 @@ add_action('wp_ajax_nopriv_load_posts_by_ajax', 'load_posts_by_ajax_callback');
 
 function load_posts_by_ajax_callback() {
 
+
     //echo("<script>console.log('hhhhh');</script>");
 
     check_ajax_referer('load_more_posts', 'security');
@@ -572,8 +573,16 @@ function load_posts_by_ajax_callback() {
     // die();
     $paged = $_POST['page'];
     $click_id = $_POST['click_id'];
+    //var_dump($click_id);
+
+   // echo "page" . $paged ;
+
+//var_dump($click_id);
+  //  echo "ggg";
+
     if(is_integer($click_id))
     {
+        echo "ggg";
         $query = new WP_Query( array
             ( 'post_type' => 'easymediagallery',
                 'posts_per_page'=> '3',
@@ -586,13 +595,12 @@ function load_posts_by_ajax_callback() {
                     )
                 ),
 
-
-                //'orderby'        => $post->ID ,
                 'order'          => 'ASC'
             )
         );
+      // print_r($query);
     }
-    else{
+    else if($click_id = 'all'){
         $query = new WP_Query( array
             ( 'post_type' => 'easymediagallery',
                 'posts_per_page'=> '3',
@@ -602,14 +610,15 @@ function load_posts_by_ajax_callback() {
             )
         );
     }
+    else
+    {
+        printf("hello code ");
+    }
 
-    /*error_log($paged);
-    error_log($clicl_id);
-    print_r($paged);
-    print_r($clicl_id);*/
-
+  //  $click_id ='undefined ';
 
     $posts = $query->posts;
+    //print_r($posts);
     //print_r($posts);
 
     foreach($posts as $all_posts){
@@ -626,6 +635,8 @@ function load_posts_by_ajax_callback() {
             //echo $term_id->term_id ; ?>
         <?php }
         $temp_post_ids = implode(' ',$temp_post_arr);
+        unset($temp_post_arr);
+
 //print_r($temp_post_ids);
 //die();
         ?>
@@ -682,8 +693,136 @@ function load_posts_by_ajax_callback() {
 //wp_die();
 }
 
+add_action('wp_ajax_load_posts_by_ajax1', 'load_posts_by_ajax_callback1');
+add_action('wp_ajax_nopriv_load_posts_by_ajax1', 'load_posts_by_ajax_callback1');
+
+function load_posts_by_ajax_callback1() {
+
+    //echo("<script>console.log('hhhhh');</script>");
+
+    check_ajax_referer('load_more_posts1', 'security');
+    //print_r("ff");
+    // die();
+    $paged = $_POST['page'];
+    $click_id = $_POST['click_id'];
+
+     //echo "page" . $paged ;
+
+//var_dump($click_id);
+    //echo "ggg";
+
+    if($click_id != 'all')
+    {
+        // echo "ggg";
+        $query = new WP_Query( array
+            ( 'post_type' => 'easymediagallery',
+                'posts_per_page'=> '3',
+                'paged' => $paged,
+                'tax_query'     => array(
+                    array(
+                        'taxonomy'  => 'emediagallery',
+                        'field'     => 'id',
+                        'terms'     => $click_id
+                    )
+                ),
+
+                'order'          => 'ASC'
+            )
+        );
+        // print_r($query);
+    }
+    else if($click_id = 'all'){
+        $query = new WP_Query( array
+            ( 'post_type' => 'easymediagallery',
+                'posts_per_page'=> '3',
+                'paged' => $paged,
+                //'orderby'        => $post->ID ,
+                'order'          => 'ASC'
+            )
+        );
+    }
+    else
+    {
+        printf("hello code ");
+    }
+
+    $click_id ='undefined';
+
+    $posts = $query->posts;
+    //print_r($posts);
+    //print_r($posts);
+
+    foreach($posts as $all_posts){
+
+        $meta = get_post_meta($all_posts->ID);
+        $per = get_the_permalink($all_posts->ID);
+
+        $category = get_the_terms($all_posts->ID,'emediagallery');
+        $title = $meta['easmedia_metabox_title'][0];
+        $term_post_id = get_the_terms($all_posts->ID,'emediagallery');
+        foreach($term_post_id as $term_id){
+            $temp_post_arr[] = $term_id->term_id;
+
+            //echo $term_id->term_id ; ?>
+        <?php }
+        $temp_post_ids = implode(' ',$temp_post_arr);
+        unset($temp_post_arr);
+
+//print_r($temp_post_ids);
+//die();
+        ?>
+
+        <div class="col-sm-4 work-box <?php echo $temp_post_ids?>">
+
+            <a href="<?php echo $per ?>">
+                <!-- http://localhost/aptweb/easymedia/water-jug/ -->
+                <?php ?>
+                <img src="<?php echo $meta['easmedia_metabox_img'][0] ?>" alt="">
+                <span class="data-cont">
+                <span class="data-inner">
+                  <span class="data">
+                    <span class="title"><?php echo $all_posts->post_title ?></span>
+                    <hr>
+                    <span class="content">
+                      <?php //print_r(($category[0]->name));
+                      // die();
+                      $count = 0;
+                      $category_count = sizeof($category);
+                      ?>
+
+                      <?php foreach ($category as $cat){
+                          $count++;
+                          $category_name = strtoupper($cat->name);
 
 
+                          if($category_count == $count ){
+                              echo $category_name ;
+                          }
+                          else
+                          {
+                              echo $category_name . "  "."/ ";
+                          }
+
+
+
+                      } ?>
+
+                </span>
+                  </span>
+                </span>
+              </span>
+            </a>
+        </div>
+    <?php } ?>
+
+    <?php  wp_die();
+
+    ?>
+    <?php
+
+
+//wp_die();
+}
 
 
 /**
