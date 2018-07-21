@@ -1,0 +1,48 @@
+<?php ?>
+
+    <script type="text/javascript">
+        var category_click_id;
+        var page = 2;
+
+        $(document).on("click", "#link_cat", function () {
+            category_click_id = $(this).data("show");
+
+            //       page = 1 ;
+            //alert(page);
+            //   $( ".work-list" ).empty();
+
+
+        });
+
+        var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
+
+
+        jQuery(function ($) {
+            jQuery('body').on('click', '.loadmore', function () {
+                // page = 2;
+
+                var data = {
+                    'action': 'load_posts_by_ajax',
+                    'page': page,
+                    'click_id': category_click_id,
+                    'security': '<?php echo wp_create_nonce("load_more_posts"); ?>'
+                };
+
+                jQuery.post(ajaxurl, data, function (response) {
+                    //alert(response.length);
+                    if ((response.length <= 3)) {
+
+                        $('#btn').hide();
+                        $("#text_data").text("No More Data Available!");
+                    }
+
+                    else {
+                        $('.work-list').append(response);
+                        //alert(data);
+                        page++;
+                    }
+                });
+            });
+        });
+
+    </script>
